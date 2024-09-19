@@ -41,7 +41,7 @@ public class EpicManager {
     public void deleteAllEpics() {
         if (!epics.isEmpty()) {
             epics.clear();
-            System.out.println("все эпики удалены)))");
+            System.out.println("все эпики удалены");
         } else {
             System.out.println("нет активных эпиков");
         }
