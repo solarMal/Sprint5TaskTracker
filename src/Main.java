@@ -20,7 +20,7 @@ public class Main {
                 , firstEpic);
         SubTask secondSubTaskFirstEpic = new SubTask("secondSubTaskFirstEpic"
                 , "descriptionSecondSubTaskFirstEpic"
-                , "NEW"
+                , "DONE"
                 , firstEpic);
 
 
@@ -30,21 +30,34 @@ public class Main {
                 , "IN_PROGRESS"
                 , secondEpic);
 
+//        taskManager.createTask(firstTask);
+//        taskManager.createTask(secondTask);
+//        Task task = taskManager.getTaskById(2);
+//        Task task1 = taskManager.getTaskById(1);
+//        System.out.println(task);
+//        taskManager.deleteTaskById(2);
+//        taskManager.getTasks();
+
         epicManager.createEpic(firstEpic);
         epicManager.createSubTask(firstSubTaskFirstEpic);
         epicManager.createSubTask(secondSubTaskFirstEpic);
 
         epicManager.createEpic(secondEpic);
         epicManager.createSubTask(firstSubTaskSecondEpic);
+//        epicManager.getEpics();
+        Epic epic1 = epicManager.getEpicById(1);
+        System.out.println(epic1);
+        SubTask subTask = epicManager.getSubTaskById(3, epic1);
+        System.out.println(subTask);
 
-        epicManager.deleteAllEpics();
-        epicManager.getEpics();
-
-        taskManager.createTask(firstTask);
-        taskManager.createTask(secondTask);
-
-        taskManager.deleteAllTasks();
-        taskManager.getTasks();
+//        epicManager.deleteAllEpics();
+//        epicManager.getEpics();
+//
+//        taskManager.createTask(firstTask);
+//        taskManager.createTask(secondTask);
+//
+//        taskManager.deleteAllTasks();
+//        taskManager.getTasks();
 
 
     }

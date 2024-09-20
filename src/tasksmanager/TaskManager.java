@@ -5,7 +5,7 @@ import tasks.Task;
 import java.util.HashMap;
 
 public class TaskManager {
-    int dynamicId = 0;
+    int dynamicId = 1;
 
     HashMap<Integer, Task> taskHashMap = new HashMap<>();
 
@@ -27,22 +27,22 @@ public class TaskManager {
         for (Integer i : taskHashMap.keySet()) {
             Task task = taskHashMap.get(i);
 
-            System.out.println("задача " + (i + 1) + " " + task);
+            System.out.println("задача " + i + " " + task);
         }
     }
 
-    public void getTaskById(int id) {
-        id -= 1;
+    public Task getTaskById(int id) {
+
+        Task task = null;
         if (taskHashMap.containsKey(id)) {
-            Task task = taskHashMap.get(id);
-            System.out.println("задача " + (id + 1) + " " + task);
+            task = taskHashMap.get(id);
         } else {
-            System.out.println("задача с id " + (id + 1) + " не найдена");
+            System.out.println("задача с id " + id + " не найдена");
         }
+        return task;
     }
 
     public void updateTask(int id, Task task) {
-        id -= 1;
         if (task != null && taskHashMap.containsKey(id)) {
             task.setId(id);
             taskHashMap.put(task.getId(), task);
@@ -52,7 +52,6 @@ public class TaskManager {
     }
 
     public void deleteTaskById(int id) {
-        id -= 1;
         if (taskHashMap.containsKey(id)) {
             taskHashMap.remove(id);
         } else {
