@@ -1,14 +1,16 @@
 package tasksmanager;
 
 import tasks.Task;
+import tasksinterface.TaskInterface;
 
 import java.util.HashMap;
 
-public class TaskManager {
+public class InMemoryTaskManager implements TaskInterface {
     int dynamicId = 1;
 
     HashMap<Integer, Task> taskHashMap = new HashMap<>();
 
+    @Override
     public void createTask(Task task) {
         if (task != null) {
             task.setId(dynamicId++);
@@ -18,6 +20,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public void getTasks() {
         if (taskHashMap.isEmpty()) {
             System.out.println("нет активных задач");
@@ -31,6 +34,7 @@ public class TaskManager {
         }
     }
 
+    @Override
     public Task getTaskById(int id) {
 
         Task task = null;
@@ -42,23 +46,26 @@ public class TaskManager {
         return task;
     }
 
+    @Override
     public void updateTask(int id, Task task) {
         if (task != null && taskHashMap.containsKey(id)) {
             task.setId(id);
             taskHashMap.put(task.getId(), task);
         } else {
-            System.out.println("ошибка в обновлении задачи");
+            System.out.println("ошибка в обновлении задачи. Задача с id " + id + " не существует");
         }
     }
 
+    @Override
     public void deleteTaskById(int id) {
         if (taskHashMap.containsKey(id)) {
             taskHashMap.remove(id);
         } else {
-            System.out.println("удалить задачу не получилось. id " + (id + 1) + " не удалось найди");
+            System.out.println("удалить задачу не получилось. id " + id + " не удалось найди");
         }
     }
 
+    @Override
     public void deleteAllTasks() {
         taskHashMap.clear();
         System.out.println("все задачи успешно удалены");

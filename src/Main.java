@@ -1,17 +1,22 @@
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
-import tasksmanager.EpicManager;
-import tasksmanager.TaskManager;
+import tasksinterface.EpicInterface;
+import tasksinterface.SubTaskInterface;
+import tasksinterface.TaskInterface;
+import tasksmanager.InMemoryEpicManager;
+import tasksmanager.InMemoryTaskManager;
 
 
 public class Main {
     public static void main(String[] args) {
-        TaskManager taskManager = new TaskManager();
-        EpicManager epicManager = new EpicManager();
+//        TaskInterface taskManager = new InMemoryTaskManager();
+        EpicInterface epicManager = new InMemoryEpicManager();
+        SubTaskInterface subTaskManager = new InMemoryEpicManager();
 
         Task firstTask = new Task("firstTask", "description firstTask", "new");
         Task secondTask = new Task("secondTask", "description second task", "new");
+        Task updateTask = new Task("updateTask", "description updateTask", "new");
 
         Epic firstEpic = new Epic("firstEpic", "descriptionFirstEpic");
         SubTask firstSubTaskFirstEpic = new SubTask("firstSubTaskFirstEpic"
@@ -30,34 +35,48 @@ public class Main {
                 , "IN_PROGRESS"
                 , secondEpic);
 
-//        taskManager.createTask(firstTask);
-//        taskManager.createTask(secondTask);
-//        Task task = taskManager.getTaskById(2);
-//        Task task1 = taskManager.getTaskById(1);
-//        System.out.println(task);
-//        taskManager.deleteTaskById(2);
-//        taskManager.getTasks();
 
         epicManager.createEpic(firstEpic);
-        epicManager.createSubTask(firstSubTaskFirstEpic);
-        epicManager.createSubTask(secondSubTaskFirstEpic);
-
         epicManager.createEpic(secondEpic);
-        epicManager.createSubTask(firstSubTaskSecondEpic);
-//        epicManager.getEpics();
-        Epic epic1 = epicManager.getEpicById(1);
-        System.out.println(epic1);
-        SubTask subTask = epicManager.getSubTaskById(3, epic1);
-        System.out.println(subTask);
 
-//        epicManager.deleteAllEpics();
-//        epicManager.getEpics();
+        subTaskManager.createSubTask(firstSubTaskFirstEpic);
+        subTaskManager.createSubTask(secondSubTaskFirstEpic);
+        subTaskManager.createSubTask(firstSubTaskSecondEpic);
+
+
+        subTaskManager.deleteSubTaskById(1, firstEpic);
+        subTaskManager.deleteSubTaskById(2, firstEpic);
+        subTaskManager.deleteSubTaskById(1, secondEpic);
+        epicManager.deleteAllEpics();
+        epicManager.getEpics();
+
+
+
+
+//       taskManager.createTask(firstTask);
+//       taskManager.createTask(secondTask);
 //
-//        taskManager.createTask(firstTask);
-//        taskManager.createTask(secondTask);
+//       taskManager.getTasks();
+//
+//       Task task1 = taskManager.getTaskById(1);
+//        System.out.println(task1);
+//       Task task2 = taskManager.getTaskById(2);
+//        System.out.println(task2);
+//
+//        taskManager.updateTask(3, updateTask);
+//
+//        taskManager.getTasks();
+//
+//        Task update = taskManager.getTaskById(2);
+//        System.out.println(update);
+//
+//        taskManager.deleteTaskById(3);
+//        taskManager.getTasks();
 //
 //        taskManager.deleteAllTasks();
 //        taskManager.getTasks();
+
+
 
 
     }
