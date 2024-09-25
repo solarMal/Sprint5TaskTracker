@@ -5,6 +5,7 @@ import tasks.SubTask;
 import tasks.Task;
 import manager.TaskManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     HashMap<Integer, Epic> epics = new HashMap<>();
     HashMap<Integer, Task> taskHashMap = new HashMap<>();
+    ArrayList<Task> historyTask = new ArrayList<>();
 
     @Override
     public void createTask(Task task) {
@@ -49,6 +51,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("задача с id " + id + " не найдена");
         }
+        saveTaskInHistory(task);
         return task;
     }
 
@@ -124,6 +127,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Эпик с id " + id + " не существует");
         }
+        saveTaskInHistory(epic);
         return epic;
     }
 
@@ -207,6 +211,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println(epic + " не имеет подзадачи с id " + id);
         }
+        saveTaskInHistory(subTask);
         return subTask;
     }
 
@@ -247,8 +252,38 @@ public class InMemoryTaskManager implements TaskManager {
         }
     }
 
+    private void saveTaskInHistory(Task task) {
+        if (historyTask.size() == 10) {
+            historyTask.remove(0);
+            historyTask.add(task);
+        } else {
+            historyTask.add(task);
+        }
+    }
+
+    private void saveTaskInHistory(Epic epic) {
+        if (historyTask.size() == 10) {
+            historyTask.remove(0);
+            historyTask.add(epic);
+        } else {
+            historyTask.add(epic);
+        }
+    }
+
+    private void saveTaskInHistory(SubTask subTask) {
+        if (historyTask.size() == 10) {
+            historyTask.remove(0);
+            historyTask.add(subTask);
+        } else {
+            historyTask.add(subTask);
+        }
+    }
+
     @Override
     public List<Task> getHistory() {
-        return List.of();
+        if (historyTask.isEmpty()) {
+            System.out.println("Нет просмотренных задач");
+        }
+        return historyTask;
     }
 }

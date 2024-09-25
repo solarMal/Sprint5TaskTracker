@@ -4,6 +4,8 @@ import tasks.Task;
 import manager.TaskManager;
 import inmemory.InMemoryTaskManager;
 
+import java.util.List;
+
 
 public class Main {
     public static void main(String[] args) {
@@ -38,12 +40,28 @@ public class Main {
         taskManager.createSubTask(secondSubTaskFirstEpic);
         taskManager.createSubTask(firstSubTaskSecondEpic);
 
+        taskManager.createTask(firstTask);
+        taskManager.createTask(secondTask);
 
-//        taskManager.deleteSubTaskById(1, firstEpic);
-//        taskManager.deleteSubTaskById(2, firstEpic);
-//        taskManager.deleteSubTaskById(1, secondEpic);
-//        taskManager.deleteAllEpics();
-        taskManager.getEpics();
+        Task task1 = taskManager.getTaskById(1);
+        Task task2 = taskManager.getTaskById(2);
+        Task epic1 = taskManager.getEpicById(1);
+        Task epic2 = taskManager.getEpicById(2);
+        Task sub1 = taskManager.getSubTaskById(1, firstEpic);
+        Task sub2 = taskManager.getSubTaskById(2, firstEpic);
+        Task sub3 = taskManager.getSubTaskById(2, firstEpic);
+        Task sub4 = taskManager.getSubTaskById(2, firstEpic);
+        Task sub5 = taskManager.getSubTaskById(2, firstEpic);
+        Task sub6 = taskManager.getSubTaskById(2, firstEpic);
+        Task sub7 = taskManager.getSubTaskById(2, firstEpic);
+        Task sub8 = taskManager.getSubTaskById(2, firstEpic);
+        Task sub9 = taskManager.getSubTaskById(2, firstEpic);
+
+        List<Task> tasks = taskManager.getHistory();
+
+        for (Task i: tasks) {
+            System.out.println(i);
+        }
 
 
 
