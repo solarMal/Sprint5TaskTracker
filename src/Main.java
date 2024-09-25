@@ -1,17 +1,13 @@
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
-import tasksinterface.EpicInterface;
-import tasksinterface.SubTaskInterface;
-import tasksmanager.InMemoryEpicManager;
-
+import tasksinterface.TaskManager;
+import tasksmanager.InMemoryTaskManager;
 
 
 public class Main {
     public static void main(String[] args) {
-//        TaskInterface taskManager = new InMemoryTaskManager();
-        EpicInterface epicManager = new InMemoryEpicManager();
-        SubTaskInterface subTaskManager = new InMemoryEpicManager();
+        TaskManager taskManager = new InMemoryTaskManager();
 
         Task firstTask = new Task("firstTask", "description firstTask", "new");
         Task secondTask = new Task("secondTask", "description second task", "new");
@@ -35,19 +31,19 @@ public class Main {
                 , secondEpic);
 
 
-        epicManager.createEpic(firstEpic);
-        epicManager.createEpic(secondEpic);
+        taskManager.createEpic(firstEpic);
+        taskManager.createEpic(secondEpic);
 
-        subTaskManager.createSubTask(firstSubTaskFirstEpic);
-        subTaskManager.createSubTask(secondSubTaskFirstEpic);
-        subTaskManager.createSubTask(firstSubTaskSecondEpic);
+        taskManager.createSubTask(firstSubTaskFirstEpic);
+        taskManager.createSubTask(secondSubTaskFirstEpic);
+        taskManager.createSubTask(firstSubTaskSecondEpic);
 
 
-        subTaskManager.deleteSubTaskById(1, firstEpic);
-        subTaskManager.deleteSubTaskById(2, firstEpic);
-        subTaskManager.deleteSubTaskById(1, secondEpic);
-        epicManager.deleteAllEpics();
-        epicManager.getEpics();
+//        taskManager.deleteSubTaskById(1, firstEpic);
+//        taskManager.deleteSubTaskById(2, firstEpic);
+//        taskManager.deleteSubTaskById(1, secondEpic);
+//        taskManager.deleteAllEpics();
+        taskManager.getEpics();
 
 
 
@@ -74,9 +70,6 @@ public class Main {
 //
 //        taskManager.deleteAllTasks();
 //        taskManager.getTasks();
-
-
-
 
     }
 }
