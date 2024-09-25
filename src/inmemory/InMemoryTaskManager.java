@@ -1,9 +1,9 @@
-package tasksmanager;
+package inmemory;
 
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
-import tasksinterface.TaskManager;
+import manager.TaskManager;
 
 import java.util.HashMap;
 import java.util.List;

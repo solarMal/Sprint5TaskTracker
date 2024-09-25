@@ -1,8 +1,8 @@
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
-import tasksinterface.TaskManager;
-import tasksmanager.InMemoryTaskManager;
+import manager.TaskManager;
+import inmemory.InMemoryTaskManager;
 
 
 public class Main {
