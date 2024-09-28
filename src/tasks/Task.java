@@ -1,17 +1,19 @@
 package tasks;
 
+import status.Status;
+
 import java.util.Objects;
 
 public class Task {
     int id;
     String name;
     String description;
-    String status;
+    Status status;
 
     public Task() {
     }
 
-    public Task(String name, String description, String status) {
+    public Task(String name, String description, Status status) {
         this.name = name;
         this.description = description;
         this.status = status;
@@ -46,11 +48,12 @@ public class Task {
         this.description = description;
     }
 
-    public String getStatus() {
+
+    public Status getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(Status status) {
         this.status = status;
     }
 

@@ -1,11 +1,12 @@
 package inmemory;
 
+import manager.Managers;
+import status.Status;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 import manager.TaskManager;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,7 +17,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     HashMap<Integer, Epic> epics = new HashMap<>();
     HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    ArrayList<Task> historyTask = new ArrayList<>();
+    InMemoryHistoryManager historyManager = Managers.getDefaultHistory();//нахуя?
 
     @Override
     public void createTask(Task task) {
@@ -51,7 +52,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("задача с id " + id + " не найдена");
         }
-        saveTaskInHistory(task);
+        historyManager.add(task);
         return task;
     }
 
@@ -84,7 +85,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void createEpic(Epic epic) {
         if (epic != null) {
             epic.setId(dynamicEpicId++);
-            epic.setStatus("NEW");
+            epic.setStatus(Status.NEW);
             epics.put(epic.getId(), epic);
         } else {
             System.out.println("Эпик не создан");
@@ -127,7 +128,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println("Эпик с id " + id + " не существует");
         }
-        saveTaskInHistory(epic);
+        historyManager.add(epic);
         return epic;
     }
 
@@ -185,7 +186,7 @@ public class InMemoryTaskManager implements TaskManager {
     public void deleteAllSubTasks(Epic epic) {
         if (!epic.getSubTasks().isEmpty()) {
             epic.getSubTasks().clear();
-            epic.setStatus("NEW");
+            epic.setStatus(Status.NEW);
             System.out.println("подзадачи успешно удалены");
         } else {
             System.out.println(epic + " не имеет подзадач");
@@ -211,7 +212,7 @@ public class InMemoryTaskManager implements TaskManager {
         } else {
             System.out.println(epic + " не имеет подзадачи с id " + id);
         }
-        saveTaskInHistory(subTask);
+        historyManager.add(subTask);
         return subTask;
     }
 
@@ -236,54 +237,24 @@ public class InMemoryTaskManager implements TaskManager {
         int doneCounter = 0;
 
         for (SubTask sub : epic.getSubTasks().values()) {
-            if (sub.getStatus().equals("NEW")) {
+            if (sub.getStatus().equals(Status.NEW)) {
                 newCounter++;
-            } else if (sub.getStatus().equals("DONE")) {
+            } else if (sub.getStatus().equals(Status.DONE)) {
                 doneCounter++;
             }
         }
 
         if (newCounter == epic.getSubTasks().size()) {
-            epic.setStatus("NEW");
+            epic.setStatus(Status.NEW);
         } else if (doneCounter == epic.getSubTasks().size()) {
-            epic.setStatus("DONE");
+            epic.setStatus(Status.DONE);
         } else {
-            epic.setStatus("IN_PROGRESS");
-        }
-    }
-
-    private void saveTaskInHistory(Task task) {
-        if (historyTask.size() == 10) {
-            historyTask.remove(0);
-            historyTask.add(task);
-        } else {
-            historyTask.add(task);
-        }
-    }
-
-    private void saveTaskInHistory(Epic epic) {
-        if (historyTask.size() == 10) {
-            historyTask.remove(0);
-            historyTask.add(epic);
-        } else {
-            historyTask.add(epic);
-        }
-    }
-
-    private void saveTaskInHistory(SubTask subTask) {
-        if (historyTask.size() == 10) {
-            historyTask.remove(0);
-            historyTask.add(subTask);
-        } else {
-            historyTask.add(subTask);
+            epic.setStatus(Status.IN_PROGRESS);
         }
     }
 
     @Override
     public List<Task> getHistory() {
-        if (historyTask.isEmpty()) {
-            System.out.println("Нет просмотренных задач");
-        }
-        return historyTask;
+        return historyManager.getHistory();
     }
 }

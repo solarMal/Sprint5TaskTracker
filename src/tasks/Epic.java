@@ -30,17 +30,6 @@ public class Epic extends Task {
         return Objects.hash(super.hashCode(), subTasks);
     }
 
-    //    @Override
-//    public String toString() {
-//        return "Epic{" +
-//                "name='" + name + '\'' +
-//                ", description='" + description + '\'' +
-//                ", status='" + status + '\'' +
-//                ", subTasks=" + (subTasks != null ? subTasks.toString() : "null") +
-//                '}';
-//    }
-
-
     @Override
     public String toString() {
         return "Epic{" +
