@@ -1,5 +1,6 @@
 package inmemory;
 
+import manager.HistoryManager;
 import manager.Managers;
 import status.Status;
 import tasks.Epic;
@@ -17,7 +18,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     HashMap<Integer, Epic> epics = new HashMap<>();
     HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    InMemoryHistoryManager historyManager = Managers.getDefaultHistory();//нахуя?
+    HistoryManager historyManager = Managers.getDefaultHistory();//нахуя?
 
     @Override
     public void createTask(Task task) {
