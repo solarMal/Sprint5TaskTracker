@@ -5,6 +5,7 @@ import tasks.Task;
 import manager.TaskManager;
 import inmemory.InMemoryTaskManager;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -42,9 +43,32 @@ public class Main {
         taskManager.createTask(firstTask);
         taskManager.createTask(secondTask);
 
-        taskManager.getAllSubTasks(firstEpic);
-        taskManager.getTasks();
-        taskManager.getEpics();
+        Epic epic1 = taskManager.getEpicById(firstEpic.getId());
+        taskManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
+        taskManager.getSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
+
+
+        Epic epic2 = taskManager.getEpicById(secondEpic.getId());
+        taskManager.getSubTaskById(firstSubTaskSecondEpic.getId(), secondEpic);
+        taskManager.getTaskById(firstTask.getId());
+        taskManager.getTaskById(secondTask.getId());
+
+//        taskManager.deleteAllSubTasks(firstEpic);
+//        taskManager.deleteAllSubTasks(secondEpic);
+//        taskManager.deleteAllTasks();
+//            taskManager.deleteAllEpics();
+//        taskManager.deleteTaskById(firstTask.getId());
+//        taskManager.deleteTaskById(secondTask.getId());
+//        taskManager.deleteEpicById(firstEpic.getId());
+//        taskManager.deleteEpicById(secondEpic.getId());
+        taskManager.deleteSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
+        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
+
+        List<Task> taskList = taskManager.getHistory();
+
+        for (Task tasks: taskList) {
+            System.out.println(tasks);
+        }
 
 
     }
