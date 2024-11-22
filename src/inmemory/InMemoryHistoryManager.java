@@ -8,7 +8,7 @@ import java.util.List;
 
 public class InMemoryHistoryManager implements HistoryManager {
 
-    ArrayList<Task> historyTask = new ArrayList<>();
+    private final ArrayList<Task> historyTask = new ArrayList<>();
 
     @Override
     public void add(Task task) {
@@ -26,5 +26,10 @@ public class InMemoryHistoryManager implements HistoryManager {
             System.out.println("Нет просмотренных задач");
         }
         return historyTask;
+    }
+
+    @Override
+    public void remove(Task task) {
+        historyTask.remove(task);
     }
 }
