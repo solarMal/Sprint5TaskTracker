@@ -10,6 +10,7 @@ import manager.TaskManager;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class InMemoryTaskManager implements TaskManager {
     int dynamicId = 1;
@@ -228,12 +229,15 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public SubTask getSubTaskById(int id, Epic epic) {
         SubTask subTask = null;
-        if (epic.getSubTasks().containsKey(id)) {
-            subTask = epic.getSubTasks().get(id);
+
+        Map<Integer, SubTask> subTasks = epic.getSubTasks();
+        if (subTasks != null && subTasks.containsKey(id)) {
+            subTask = subTasks.get(id);
+            historyManager.add(subTask);
         } else {
             System.out.println(epic + " не имеет подзадачи с id " + id);
         }
-        historyManager.add(subTask);
+
         return subTask;
     }
 
