@@ -5,7 +5,6 @@ import tasks.Task;
 import manager.TaskManager;
 import inmemory.InMemoryTaskManager;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Main {
@@ -55,6 +54,7 @@ public class Main {
         taskManager.deleteTaskById(firstTask.getId());
         taskManager.deleteTaskById(secondTask.getId());
         taskManager.deleteSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
+        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
         taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
 
 
