@@ -57,7 +57,7 @@ public class Main {
 
 
 
-//        taskManager.getTaskById(secondTask.getId());
+        taskManager.getTaskById(secondTask.getId());
 //        taskManager.getTaskById(firstTask.getId());
 //        taskManager.getEpicById(firstEpic.getId());
 //        taskManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
