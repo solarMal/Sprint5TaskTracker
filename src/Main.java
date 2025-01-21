@@ -1,3 +1,4 @@
+import manager.Managers;
 import status.Status;
 import tasks.Epic;
 import tasks.SubTask;
@@ -22,11 +23,11 @@ public class Main {
                 , firstEpic);
         SubTask secondSubTaskFirstEpic = new SubTask("secondSubTaskFirstEpic"
                 , "descriptionSecondSubTaskFirstEpic"
-                , Status.DONE
+                , Status.NEW
                 , firstEpic);
         SubTask thirdSubTaskFirstEpic = new SubTask("thirdSubTaskFirstEpic"
                 , "descriptionThirdSubTaskFirstEpic"
-                , Status.DONE
+                , Status.NEW
                 , firstEpic);
 
 
@@ -38,30 +39,35 @@ public class Main {
 
         taskManager.createTask(firstTask);
         taskManager.createTask(secondTask);
+        List<Task> tasks = taskManager.getTasks();
+//        System.out.println(tasks);
 
         taskManager.createEpic(firstEpic);
         taskManager.createSubTask(firstSubTaskFirstEpic);
         taskManager.createSubTask(secondSubTaskFirstEpic);
         taskManager.createSubTask(thirdSubTaskFirstEpic);
 
-        taskManager.getTaskById(secondTask.getId());
-        taskManager.getTaskById(firstTask.getId());
-        taskManager.getEpicById(firstEpic.getId());
-        taskManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
-        taskManager.getSubTaskById(thirdSubTaskFirstEpic.getId(), firstEpic);
-        taskManager.getSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
+        taskManager.createEpic(secondEpic);
+        taskManager.createSubTask(firstSubTaskSecondEpic);
 
-        taskManager.deleteTaskById(firstTask.getId());
-        taskManager.deleteTaskById(secondTask.getId());
-        taskManager.deleteSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
-        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
-        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
+        List<Epic> epics = taskManager.getEpics();
+        System.out.println(epics);
+        List<SubTask> subTasks = taskManager.getAllSubTasks();
+        System.out.println(subTasks);
 
 
 
-        List<Task> tasks = taskManager.getHistory();
-        for (Task task: tasks) {
-            System.out.println(task);
-        }
+//        taskManager.getTaskById(secondTask.getId());
+//        taskManager.getTaskById(firstTask.getId());
+//        taskManager.getEpicById(firstEpic.getId());
+//        taskManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
+//        taskManager.getSubTaskById(thirdSubTaskFirstEpic.getId(), firstEpic);
+//        taskManager.getSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
+
+//        taskManager.deleteTaskById(firstTask.getId());
+//        taskManager.deleteTaskById(secondTask.getId());
+//        taskManager.deleteSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
+//        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
+//        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
     }
 }

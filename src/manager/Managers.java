@@ -4,7 +4,7 @@ import inmemory.InMemoryHistoryManager;
 import inmemory.InMemoryTaskManager;
 
 public class Managers <T extends TaskManager> {
-    public TaskManager getDefault() {
+    public static TaskManager getDefault() {
         return new InMemoryTaskManager();
     }
 

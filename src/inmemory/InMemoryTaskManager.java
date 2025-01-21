@@ -8,6 +8,7 @@ import tasks.SubTask;
 import tasks.Task;
 import manager.TaskManager;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -30,17 +31,19 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getTasks() {
+    public List<Task> getTasks() {
+        List<Task> result = new ArrayList<>();
+
         if (taskHashMap.isEmpty()) {
             System.out.println("нет активных задач");
-            return;
         }
 
         for (Integer i : taskHashMap.keySet()) {
             Task task = taskHashMap.get(i);
 
-            System.out.println(task);
+            result.add(task);
         }
+        return result;
     }
 
     @Override
@@ -97,21 +100,17 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getEpics() {
+    public List<Epic> getEpics() {
+        List<Epic> result = new ArrayList<>();
         if (epics.isEmpty()) {
             System.out.println("нет активных эпиков");
         } else {
             for (Integer epicId : epics.keySet()) {
                 Epic epic = epics.get(epicId);
-                System.out.println(epic);
-
-                for (Integer subTaskId : epic.getSubTasks().keySet()) {
-                    SubTask subTask = epic.getSubTasks().get(subTaskId);
-                    System.out.println(subTask);
-                }
-                System.out.println();
+                result.add(epic);
             }
         }
+        return result;
     }
 
     @Override
@@ -186,16 +185,16 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void getAllSubTasks(Epic epic) {
-        if (!epic.getSubTasks().isEmpty()) {
-            for (Integer i : epic.getSubTasks().keySet()) {
-                SubTask subTask = epic.getSubTasks().get(i);
-                System.out.println(subTask);
+    public List<SubTask> getAllSubTasks() {
+        List<SubTask> result = new ArrayList<>();
+        if (!epics.isEmpty()) {
+            for (Epic epic: epics.values()) {
+                if (!epic.getSubTasks().isEmpty()) {
+                    result.addAll(epic.getSubTasks().values());
+                }
             }
-        } else {
-            System.out.println(epic + " не имеет подзадач");
         }
-
+        return result;
     }
 
     @Override
