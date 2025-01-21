@@ -1,4 +1,3 @@
-import manager.Managers;
 import status.Status;
 import tasks.Epic;
 import tasks.SubTask;
@@ -29,7 +28,6 @@ public class Main {
                 , "descriptionThirdSubTaskFirstEpic"
                 , Status.NEW
                 , firstEpic);
-
 
         Epic secondEpic = new Epic("secondEpic", "descriptionSecondEpic");
         SubTask firstSubTaskSecondEpic = new SubTask("firstSubTaskSecondEpic"
