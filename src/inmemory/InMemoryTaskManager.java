@@ -16,9 +16,9 @@ import java.util.Map;
 public class InMemoryTaskManager implements TaskManager {
     int dynamicId = 1;
 
-    HashMap<Integer, Epic> epics = new HashMap<>();
-    HashMap<Integer, Task> taskHashMap = new HashMap<>();
-    HistoryManager historyManager = Managers.getDefaultHistory();
+    protected HashMap<Integer, Epic> epics = new HashMap<>();
+    protected HashMap<Integer, Task> taskHashMap = new HashMap<>();
+    protected HistoryManager historyManager = Managers.getDefaultHistory();
 
     @Override
     public void createTask(Task task) {
@@ -102,9 +102,7 @@ public class InMemoryTaskManager implements TaskManager {
     @Override
     public List<Epic> getEpics() {
         List<Epic> result = new ArrayList<>();
-        if (epics.isEmpty()) {
-            System.out.println("нет активных эпиков");
-        } else {
+        if (!epics.isEmpty()) {
             for (Integer epicId : epics.keySet()) {
                 Epic epic = epics.get(epicId);
                 result.add(epic);

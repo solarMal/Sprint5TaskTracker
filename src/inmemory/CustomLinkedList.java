@@ -31,8 +31,12 @@ public class CustomLinkedList {
         Node existingNode = integerNodeMap.get(task.getId());
 
         if (existingNode != null) {
+            if (existingNode == last) {
+                return; // Задача уже в конце списка
+            }
             removeNode(existingNode);
         }
+
         Node newNode = new Node(task, last, null);
 
         if (last != null) {
@@ -52,8 +56,7 @@ public class CustomLinkedList {
             result.add(currentNode.task);
             currentNode = currentNode.next;
         }
-
-        return List.copyOf(result);
+        return result; // Возвращаем изменяемый список
     }
 
     private void removeNode(Node node) {
