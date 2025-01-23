@@ -59,15 +59,15 @@ public class Epic extends Task {
     public String toString() {
         StringBuilder sb = new StringBuilder("Epic{");
 
-        if (!subTasks.isEmpty()) {
-            sb.append("subTasks=").append(getSubtaskId(subTasks)).append(", ");
-        }
-
         sb.append("id=").append(id)
                 .append(", name='").append(name).append('\'')
                 .append(", description='").append(description).append('\'')
                 .append(", status=").append(status)
                 .append('}');
+
+        if (!subTasks.isEmpty()) {
+            sb.append("subTasks=").append(getSubtaskId(subTasks)).append(", ");
+        }
 
         return sb.toString();
     }

@@ -2,30 +2,24 @@ package infile;
 
 import inmemory.InMemoryTaskManager;
 import manager.HistoryManager;
-import manager.Managers;
 import status.Status;
 import tasks.Epic;
 import tasks.SubTask;
 import tasks.Task;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.Writer;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    final String filePath = "D:\\dev\\MyProject\\TaskTracker\\taskTrackerFile.txt";
+    final static String filePath = "D:\\dev\\MyProject\\TaskTracker\\taskTrackerFile.txt";
+    final static File file = new File(filePath);
 
     public FileBackedTasksManager() {
-        File file = new File(filePath);
-
         try {
             if (file.exists()) {
-                System.out.println(file.getAbsolutePath());
+
             } else {
                 boolean created = file.createNewFile();
                 if (created) {
@@ -169,7 +163,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
             }
 
             if (!historyManager.getHistory().isEmpty()) {
-                String s = FileBackedTasksManager.historyToString(historyManager);
+                String s = historyToString(historyManager);
                 writer.write("\n" + s);
             }
 
@@ -179,7 +173,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     }
 
-    //сохранения задачи в строку
     private String toString(Task task) {
         String result;
         String subtaskEpicId = "";
@@ -208,8 +201,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return result;
     }
 
-    //создания задачи из строки
-    private Task fromString(String value) {
+     private Task fromString(String value) {
         String[] split = value.split(",");
 
         if (split[1].equals("TASK")) {
@@ -244,31 +236,95 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return null;
     }
 
-    //сохранение менеджера в строку
-    static String historyToString(HistoryManager manager) {
+    private String historyToString(HistoryManager manager) {
         StringBuilder result = new StringBuilder();
         List<Task> tasks = manager.getHistory();
 
         if (!tasks.isEmpty()) {
-            for (Task task: tasks) {
+            for (Task task : tasks) {
                 result.append(task.getId()).append(",");
             }
+            result.deleteCharAt(result.length() - 1);
         } else {
             System.out.println("история пуста");
         }
 
-        return result.deleteCharAt(result.length()-1).toString();
+        return result.toString();
     }
 
-    //восстановления менеджера истории из CSV.
-    static List<Integer> historyFromString(String value) {
-        List<Integer> result = new ArrayList<>();
-        String[] split = value.split(",");
-
-        for (String s: split) {
-            result.add(Integer.parseInt(s));
+    private List<Integer> historyFromString(String value) {
+        List<Integer> historyIds = new ArrayList<>();
+        if (value == null || value.isEmpty()) {
+            return historyIds;
         }
-        return result;
+
+        String[] parts = value.split(",");
+        for (String part : parts) {
+            historyIds.add(Integer.parseInt(part));
+        }
+
+        return historyIds;
+    }
+
+    public FileBackedTasksManager loadFromFile(File file) {
+        FileBackedTasksManager manager = new FileBackedTasksManager();
+        List<Integer> historyIds = new ArrayList<>();
+        boolean isHistorySection = false;
+
+        try (BufferedReader br = new BufferedReader(new FileReader(file))) {
+            String line;
+            while ((line = br.readLine()) != null) {
+                if (line.isEmpty()) {
+                    isHistorySection = true; // Переходим к секции истории
+                    continue;
+                }
+
+                if (!isHistorySection) {
+                    Task task = fromString(line);
+                    if (task != null) {
+                        if (task.getClass().equals(Task.class)) {
+                            manager.createTask(task);
+                        } else if (task.getClass().equals(Epic.class)) {
+                            manager.createEpic((Epic) task);
+                        } else if (task.getClass().equals(SubTask.class)) {
+                            manager.createSubTask((SubTask) task);
+                        }
+                    }
+                } else {
+                    historyIds = historyFromString(line);
+                }
+            }
+
+            for (int id : historyIds) {
+                Task task = manager.findTaskById(id);
+                if (task != null) {
+                    manager.historyManager.add(task);
+                    save();
+                } else {
+                    System.err.println("Задача с ID " + id + " не найдена для восстановления истории.");
+                }
+            }
+
+        } catch (IOException e) {
+            throw new ManagerSaveException("Ошибка при загрузке данных из файла", e);
+        }
+
+        return manager;
+    }
+
+    private Task findTaskById(int id) {
+        if (taskHashMap.containsKey(id)) {
+            return taskHashMap.get(id);
+        }
+        if (epics.containsKey(id)) {
+            return epics.get(id);
+        }
+        for (Epic epic : epics.values()) {
+            if (epic.getSubTasks().containsKey(id)) {
+                return epic.getSubTasks().get(id);
+            }
+        }
+        return null;
     }
 
     private String getType(Task task) {
@@ -351,10 +407,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         fileBackedTasksManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
         fileBackedTasksManager.getSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
 
-        String s = FileBackedTasksManager.historyToString(fileBackedTasksManager.historyManager);
-        System.out.println(s);
-
-
+        FileBackedTasksManager reader = fileBackedTasksManager.loadFromFile(file);
 
 
 
