@@ -56,7 +56,7 @@ public class CustomLinkedList {
             result.add(currentNode.task);
             currentNode = currentNode.next;
         }
-        return result; // Возвращаем изменяемый список
+        return result;
     }
 
     private void removeNode(Node node) {

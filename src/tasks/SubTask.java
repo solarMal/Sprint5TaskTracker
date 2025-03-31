@@ -25,6 +25,28 @@ public class SubTask extends Task {
         return epic;
     }
 
+    @Override
+    public void setStatus(Status status) {
+        super.setStatus(status);
+        int newCounter = 0;
+        int doneCounter = 0;
+
+        for (SubTask sub : epic.getSubTasks().values()) {
+            if (sub.getStatus().equals(Status.NEW)) {
+                newCounter++;
+            } else if (sub.getStatus().equals(Status.DONE)) {
+                doneCounter++;
+            }
+        }
+
+        if (newCounter == epic.getSubTasks().size()) {
+            epic.setStatus(Status.NEW);
+        } else if (doneCounter == epic.getSubTasks().size()) {
+            epic.setStatus(Status.DONE);
+        } else {
+            epic.setStatus(Status.IN_PROGRESS);
+        }
+    }
 
     @Override
     public boolean equals(Object o) {

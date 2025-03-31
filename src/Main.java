@@ -22,11 +22,11 @@ public class Main {
                 , firstEpic);
         SubTask secondSubTaskFirstEpic = new SubTask("secondSubTaskFirstEpic"
                 , "descriptionSecondSubTaskFirstEpic"
-                , Status.NEW
+                , Status.DONE
                 , firstEpic);
         SubTask thirdSubTaskFirstEpic = new SubTask("thirdSubTaskFirstEpic"
                 , "descriptionThirdSubTaskFirstEpic"
-                , Status.NEW
+                , Status.DONE
                 , firstEpic);
 
         Epic secondEpic = new Epic("secondEpic", "descriptionSecondEpic");
@@ -37,25 +37,33 @@ public class Main {
 
         taskManager.createTask(firstTask);
         taskManager.createTask(secondTask);
-        List<Task> tasks = taskManager.getTasks();
+        taskManager.getTaskById(firstTask.getId());
+        taskManager.getTaskById(secondTask.getId());
+        List<Task> taskList = taskManager.getHistory();
+        System.out.println(taskList);
+//        taskManager.updateTask(5,firstTask);
+//        taskManager.createTask(secondTask);
+//        List<Task> tasks = taskManager.getTasks();
 //        System.out.println(tasks);
 
-        taskManager.createEpic(firstEpic);
-        taskManager.createSubTask(firstSubTaskFirstEpic);
-        taskManager.createSubTask(secondSubTaskFirstEpic);
-        taskManager.createSubTask(thirdSubTaskFirstEpic);
+//        taskManager.createEpic(firstEpic);
+//        taskManager.createSubTask(firstSubTaskFirstEpic);
+//        taskManager.createSubTask(secondSubTaskFirstEpic);
+//        taskManager.createSubTask(thirdSubTaskFirstEpic);
+//        Epic epic = taskManager.getEpicById(firstEpic.getId());
+//        System.out.println(epic);
 
-        taskManager.createEpic(secondEpic);
-        taskManager.createSubTask(firstSubTaskSecondEpic);
+//        taskManager.createEpic(secondEpic);
+//        taskManager.createSubTask(firstSubTaskSecondEpic);
+//
+//        List<Epic> epics = taskManager.getEpics();
+//        System.out.println(epics);
+//        List<SubTask> subTasks = taskManager.getAllSubTasks();
+//        System.out.println(subTasks);
 
-        List<Epic> epics = taskManager.getEpics();
-        System.out.println(epics);
-        List<SubTask> subTasks = taskManager.getAllSubTasks();
-        System.out.println(subTasks);
 
 
-
-        taskManager.getTaskById(secondTask.getId());
+//        taskManager.getTaskById(secondTask.getId());
 //        taskManager.getTaskById(firstTask.getId());
 //        taskManager.getEpicById(firstEpic.getId());
 //        taskManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);

@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class FileBackedTasksManager extends InMemoryTaskManager {
-    final static String filePath = "D:\\dev\\MyProject\\TaskTracker\\taskTrackerFile.txt";
+    final static String filePath = "D:\\dev\\MyProject\\TaskTracker\\taskTrackerFile.csv";
     final static File file = new File(filePath);
 
     public FileBackedTasksManager() {
@@ -25,7 +25,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 if (created) {
                     System.out.println("Файл успешно создан: " + file.getAbsolutePath());
                 } else {
-                    System.out.println("неудалось создать файл");
+                    System.out.println("не удалось создать файл");
                 }
             }
         } catch (IOException exception) {
@@ -52,8 +52,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateTask(int id, Task task) {
+    public Task updateTask(int id, Task task) {
+        Task updateTask = super.updateTask(id, task);
         super.updateTask(id, task);
+        return updateTask;
     }
 
     @Override
@@ -90,8 +92,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateEpic(int id, Epic epic) {
+    public Epic updateEpic(int id, Epic epic) {
+        Epic epic1 = super.updateEpic(id, epic);
         super.updateEpic(id, epic);
+        return epic1;
     }
 
     @Override
@@ -128,8 +132,10 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
     }
 
     @Override
-    public void updateSubTaskById(int id, SubTask subTask) {
+    public SubTask updateSubTaskById(int id, SubTask subTask) {
+        SubTask result = super.updateSubTaskById(id, subTask);
         super.updateSubTaskById(id, subTask);
+        return result;
     }
 
     @Override
@@ -370,27 +376,27 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 //        String task1 = fileBackedTasksManager.toString(firstTask);
 //        System.out.println(task1);
 
-        fileBackedTasksManager.createTask(secondTask);
+//        fileBackedTasksManager.createTask(secondTask);
 //        String task2 = fileBackedTasksManager.toString(secondTask);
 //        System.out.println(task2);
 
-        fileBackedTasksManager.createTask(updateTask);
+//        fileBackedTasksManager.createTask(updateTask);
 //        String task3 = fileBackedTasksManager.toString(updateTask);
 //        System.out.println(task3);
 
-        fileBackedTasksManager.createEpic(firstEpic);
+//        fileBackedTasksManager.createEpic(firstEpic);
 //        String epic1 = fileBackedTasksManager.toString(firstEpic);
 //        System.out.println(epic1);
 
-        fileBackedTasksManager.createSubTask(firstSubTaskFirstEpic);
+//        fileBackedTasksManager.createSubTask(firstSubTaskFirstEpic);
 //        String subtask1 = fileBackedTasksManager.toString(firstSubTaskFirstEpic);
 //        System.out.println(subtask1);
 
-        fileBackedTasksManager.createSubTask(secondSubTaskFirstEpic);
+//        fileBackedTasksManager.createSubTask(secondSubTaskFirstEpic);
 //        String subtask2 = fileBackedTasksManager.toString(secondSubTaskFirstEpic);
 //        System.out.println(subtask2);
 
-        fileBackedTasksManager.createSubTask(thirdSubTaskFirstEpic);
+//        fileBackedTasksManager.createSubTask(thirdSubTaskFirstEpic);
 //        String subtask3 = fileBackedTasksManager.toString(thirdSubTaskFirstEpic);
 //        System.out.println(subtask3);
 //

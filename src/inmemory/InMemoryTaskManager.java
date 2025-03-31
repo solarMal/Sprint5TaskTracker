@@ -54,20 +54,28 @@ public class InMemoryTaskManager implements TaskManager {
             task = taskHashMap.get(id);
         } else {
             System.out.println("задача с id " + id + " не найдена");
+            return null;
         }
         historyManager.add(task);
         return task;
     }
 
     @Override
-    public void updateTask(int id, Task task) {
-        if (task != null && taskHashMap.containsKey(id)) {
-            task.setId(id);
-            taskHashMap.put(task.getId(), task);
-        } else {
-            System.out.println("ошибка в обновлении задачи. Задача с id " + id + " не существует");
+    public Task updateTask(int id, Task task) {
+        if (task == null) {
+            System.out.println("Ошибка: передана пустая задача.");
+            return null;
         }
+        if (!taskHashMap.containsKey(id)) {
+            System.out.println("Ошибка: задача с id " + id + " не найдена.");
+            return null;
+        }
+
+        task.setId(id);
+        taskHashMap.put(id, task);
+        return task;
     }
+
 
     @Override
     public void deleteTaskById(int id) {
@@ -136,19 +144,33 @@ public class InMemoryTaskManager implements TaskManager {
             epic = epics.get(id);
         } else {
             System.out.println("Эпик с id " + id + " не существует");
+            return null;
         }
         historyManager.add(epic);
         return epic;
     }
 
     @Override
-    public void updateEpic(int id, Epic epic) {
-        if (epic != null && epics.containsKey(id)) {
-            epic.setId(id);
-            epics.put(epic.getId(), epic);
-        } else {
-            System.out.println("Эпик с id " + id + " не существует, его нельзя обновить");
+    public Epic updateEpic(int id, Epic epic) {
+        if (epic == null) {
+            System.out.println("Ошибка: передан пустой эпик");
+            return null;
         }
+        if (!epics.containsKey(id)) {
+            System.out.println("Ошибка: эпик с id " + id + " не найден.");
+            return null;
+        }
+
+        HashMap<Integer, SubTask> subTasks = epics.get(id).getSubTasks();
+
+        epic.setId(id);
+
+        for (Map.Entry<Integer, SubTask> subTaskEntry : subTasks.entrySet()) {
+            epic.getSubTasks().put(subTaskEntry.getKey(), subTaskEntry.getValue());
+        }
+
+        epics.put(id, epic);
+        return epic;
     }
 
     @Override
@@ -233,24 +255,40 @@ public class InMemoryTaskManager implements TaskManager {
             historyManager.add(subTask);
         } else {
             System.out.println(epic + " не имеет подзадачи с id " + id);
+            return null;
         }
 
         return subTask;
     }
 
+
     @Override
-    public void updateSubTaskById(int id, SubTask subTask) {
-        if (epics.containsKey(subTask.getEpic().getId())) {
-            Epic epic = epics.get(subTask.getEpic().getId());
+    public SubTask updateSubTaskById(int id, SubTask subTask) {
+        if (subTask == null) {
+            System.out.println("Ошибка: передана пустая подзадача");
+            return null;
+        }
 
-            if (epic.getSubTasks().containsKey(id)) {
-                subTask.setId(id);
-                epic.getSubTasks().put(subTask.getId(), subTask);
-            }
+        if (subTask.getEpic() == null) {
+            System.out.println("Ошибка: подзадача не привязана к эпику");
+            return null;
+        }
 
+        Epic epic = epics.get(subTask.getEpic().getId());
+
+        if (epic == null) {
+            System.out.println("Ошибка: эпик с id " + subTask.getEpic().getId() + " не найден.");
+            return null;
+        }
+
+        if (epic.getSubTasks().containsKey(id)) {
+            subTask.setId(id);
+            epic.getSubTasks().put(id, subTask);
             updateEpicStatus(epic);
+            return subTask;
         } else {
-            System.out.println("ошибка обновления эпика");
+            System.out.println("Ошибка: подзадача с id " + id + " не найдена в эпике.");
+            return null;
         }
     }
 
