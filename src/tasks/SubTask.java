@@ -3,22 +3,32 @@ package tasks;
 
 import status.Status;
 
+import java.time.Duration;
+import java.time.LocalDateTime;
 import java.util.Objects;
+import java.util.Optional;
 
 public class SubTask extends Task {
     Epic epic;
+    LocalDateTime startTime;
+    LocalDateTime endTime;
 
     public SubTask(String name, String description, Status status, Epic epic) {
         super(name, description, status);
+        setEndTimeIfSubTaskCreateWithDoneStatus();
+        this.startTime = LocalDateTime.now();
         this.epic = epic;
     }
 
     public SubTask(int id, String name, String description, Status status, Epic epic) {
         super(id, name, description, status);
+        setEndTimeIfSubTaskCreateWithDoneStatus();
+        this.startTime = LocalDateTime.now();
         this.epic = epic;
     }
 
     public SubTask() {
+        this.startTime = LocalDateTime.now();
     }
 
     public Epic getEpic() {
@@ -27,6 +37,9 @@ public class SubTask extends Task {
 
     @Override
     public void setStatus(Status status) {
+        if (this.status != Status.DONE && status == Status.DONE) {
+            endTime = LocalDateTime.now();
+        }
         super.setStatus(status);
         int newCounter = 0;
         int doneCounter = 0;
@@ -47,6 +60,20 @@ public class SubTask extends Task {
             epic.setStatus(Status.IN_PROGRESS);
         }
     }
+
+    @Override
+    public void getStartTime() {
+        System.out.println("начало подзадачи: " + startTime);
+    }
+
+    @Override
+    public Optional<Long> getEndTime() {
+        if (status == Status.DONE && startTime != null && endTime != null) {
+            return Optional.of(Duration.between(startTime, endTime).getSeconds());
+        }
+        return Optional.empty();
+    }
+
 
     @Override
     public boolean equals(Object o) {
@@ -71,5 +98,11 @@ public class SubTask extends Task {
                 ", status=" + status +
                 ", epic=" + epic.getId() +
                 '}';
+    }
+
+    private void setEndTimeIfSubTaskCreateWithDoneStatus() {
+        if (this.status == Status.DONE) {
+            endTime = LocalDateTime.now();
+        }
     }
 }

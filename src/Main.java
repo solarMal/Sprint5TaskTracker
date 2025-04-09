@@ -5,7 +5,7 @@ import tasks.Task;
 import manager.TaskManager;
 import inmemory.InMemoryTaskManager;
 
-import java.util.List;
+import java.util.Optional;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,15 +18,15 @@ public class Main {
         Epic firstEpic = new Epic("firstEpic", "descriptionFirstEpic");
         SubTask firstSubTaskFirstEpic = new SubTask("firstSubTaskFirstEpic"
                 , "descriptionFirstSubTaskFirstEpic"
-                , Status.DONE
+                , Status.NEW
                 , firstEpic);
         SubTask secondSubTaskFirstEpic = new SubTask("secondSubTaskFirstEpic"
                 , "descriptionSecondSubTaskFirstEpic"
-                , Status.DONE
+                , Status.IN_PROGRESS
                 , firstEpic);
         SubTask thirdSubTaskFirstEpic = new SubTask("thirdSubTaskFirstEpic"
                 , "descriptionThirdSubTaskFirstEpic"
-                , Status.DONE
+                , Status.NEW
                 , firstEpic);
 
         Epic secondEpic = new Epic("secondEpic", "descriptionSecondEpic");
@@ -35,45 +35,21 @@ public class Main {
                 , Status.IN_PROGRESS
                 , secondEpic);
 
-        taskManager.createTask(firstTask);
-        taskManager.createTask(secondTask);
-        taskManager.getTaskById(firstTask.getId());
-        taskManager.getTaskById(secondTask.getId());
-        List<Task> taskList = taskManager.getHistory();
-        System.out.println(taskList);
-//        taskManager.updateTask(5,firstTask);
-//        taskManager.createTask(secondTask);
-//        List<Task> tasks = taskManager.getTasks();
-//        System.out.println(tasks);
 
-//        taskManager.createEpic(firstEpic);
-//        taskManager.createSubTask(firstSubTaskFirstEpic);
-//        taskManager.createSubTask(secondSubTaskFirstEpic);
-//        taskManager.createSubTask(thirdSubTaskFirstEpic);
-//        Epic epic = taskManager.getEpicById(firstEpic.getId());
-//        System.out.println(epic);
+        taskManager.createEpic(firstEpic);
 
-//        taskManager.createEpic(secondEpic);
-//        taskManager.createSubTask(firstSubTaskSecondEpic);
-//
-//        List<Epic> epics = taskManager.getEpics();
-//        System.out.println(epics);
-//        List<SubTask> subTasks = taskManager.getAllSubTasks();
-//        System.out.println(subTasks);
+        taskManager.createSubTask(firstSubTaskFirstEpic);
+        firstSubTaskFirstEpic.setStatus(Status.DONE);
+
+        taskManager.createSubTask(secondSubTaskFirstEpic);
+        secondSubTaskFirstEpic.setStatus(Status.DONE);
+
+        taskManager.createSubTask(thirdSubTaskFirstEpic);
+        thirdSubTaskFirstEpic.setStatus(Status.DONE);
 
 
 
-//        taskManager.getTaskById(secondTask.getId());
-//        taskManager.getTaskById(firstTask.getId());
-//        taskManager.getEpicById(firstEpic.getId());
-//        taskManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
-//        taskManager.getSubTaskById(thirdSubTaskFirstEpic.getId(), firstEpic);
-//        taskManager.getSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
-
-//        taskManager.deleteTaskById(firstTask.getId());
-//        taskManager.deleteTaskById(secondTask.getId());
-//        taskManager.deleteSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
-//        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
-//        taskManager.deleteSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
+        Optional<Long> e = firstEpic.getEndTime();
+        e.ifPresent(System.out::println);
     }
 }

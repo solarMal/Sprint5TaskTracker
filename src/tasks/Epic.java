@@ -2,34 +2,52 @@ package tasks;
 
 import status.Status;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Objects;
+import java.time.LocalDateTime;
+import java.util.*;
 
 public class Epic extends Task {
     HashMap<Integer, SubTask> subTasks;
+    LocalDateTime startTime;
 
     public Epic(String name, String description) {
         super(name, description);
+        this.startTime = LocalDateTime.now();
         this.subTasks = new HashMap<>();
     }
 
     public Epic(int id, String name, String description, Status status, HashMap<Integer, SubTask> subTasks) {
         super(id, name, description, status);
+        this.startTime = LocalDateTime.now();
         this.subTasks = subTasks;
     }
 
     public Epic() {
+        this.startTime = LocalDateTime.now();
     }
 
     public Epic(String name, String description, Status status) {
         super(name, description, status);
+        this.startTime = LocalDateTime.now();
     }
 
     public Epic(int id, String name, String description, Status status) {
         super(id, name, description, status);
+        this.startTime = LocalDateTime.now();
     }
+
+
+    @Override
+    public Optional<Long> getEndTime() {
+        if (this.status == Status.DONE) {
+            return subTasks.values().stream()
+                    .map(SubTask::getEndTime)
+                    .filter(Optional::isPresent)
+                    .map(Optional::get)
+                    .reduce(Long::sum);
+        }
+        return Optional.empty();
+    }
+
 
     public HashMap<Integer, SubTask> getSubTasks() {
         return subTasks;
