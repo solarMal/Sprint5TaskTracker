@@ -372,51 +372,6 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
                 , Status.IN_PROGRESS
                 , secondEpic);
 
-        fileBackedTasksManager.createTask(firstTask);
-//        String task1 = fileBackedTasksManager.toString(firstTask);
-//        System.out.println(task1);
-
-//        fileBackedTasksManager.createTask(secondTask);
-//        String task2 = fileBackedTasksManager.toString(secondTask);
-//        System.out.println(task2);
-
-//        fileBackedTasksManager.createTask(updateTask);
-//        String task3 = fileBackedTasksManager.toString(updateTask);
-//        System.out.println(task3);
-
-//        fileBackedTasksManager.createEpic(firstEpic);
-//        String epic1 = fileBackedTasksManager.toString(firstEpic);
-//        System.out.println(epic1);
-
-//        fileBackedTasksManager.createSubTask(firstSubTaskFirstEpic);
-//        String subtask1 = fileBackedTasksManager.toString(firstSubTaskFirstEpic);
-//        System.out.println(subtask1);
-
-//        fileBackedTasksManager.createSubTask(secondSubTaskFirstEpic);
-//        String subtask2 = fileBackedTasksManager.toString(secondSubTaskFirstEpic);
-//        System.out.println(subtask2);
-
-//        fileBackedTasksManager.createSubTask(thirdSubTaskFirstEpic);
-//        String subtask3 = fileBackedTasksManager.toString(thirdSubTaskFirstEpic);
-//        System.out.println(subtask3);
-//
-//        String updateEpicStatus = fileBackedTasksManager.toString(firstEpic);
-//        System.out.println(updateEpicStatus);
-//
-//        System.out.println(fileBackedTasksManager.fromString(task1));
-//        System.out.println(fileBackedTasksManager.fromString(subtask1));
-//        System.out.println(fileBackedTasksManager.fromString(epic1));
-
-        fileBackedTasksManager.getTaskById(firstTask.getId());
-        fileBackedTasksManager.getTaskById(secondTask.getId());
-        fileBackedTasksManager.getEpicById(firstEpic.getId());
-        fileBackedTasksManager.getSubTaskById(firstSubTaskFirstEpic.getId(), firstEpic);
-        fileBackedTasksManager.getSubTaskById(secondSubTaskFirstEpic.getId(), firstEpic);
-
-        FileBackedTasksManager reader = fileBackedTasksManager.loadFromFile(file);
-
-
-
     }
 
 }
