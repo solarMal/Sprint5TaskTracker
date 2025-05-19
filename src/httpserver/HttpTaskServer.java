@@ -45,21 +45,18 @@ public class HttpTaskServer {
                     case GET_TASK:
                         handleGetTasks(exchange);
                         break;
-//                    case GET_TASK_BY_ID:
-//                        writeResponse(exchange, "получен запрос на получение задачи по id"
-//                                , 200);
-//                        break;
+                    case GET_TASK_BY_ID:
+                        handleGetTaskById(exchange);
+                        break;
                     case POST_TASK:
                         handlePostTask(exchange);
                         break;
-//                    case DELETE_TASK_BY_ID:
-//                        writeResponse(exchange, "получен запрос на удаление задачи"
-//                                , 200);
-//                        break;
-//                    case DELETE_TASKS:
-//                        writeResponse(exchange, "получен запрос на удаление всех задач"
-//                                , 200);
-//                        break;
+                    case DELETE_TASK_BY_ID:
+                        handleDeleteTaskById(exchange);
+                        break;
+                    case DELETE_TASKS:
+                        handleDeleteTask(exchange);
+                        break;
 //                    case GET_SUBTASK:
 //                        writeResponse(exchange, "получен запрос на получение подзадачи"
 //                                , 200);
@@ -114,6 +111,100 @@ public class HttpTaskServer {
             }
         }
 
+        private void handlePostTask(HttpExchange exchange) throws IOException {
+            String body = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
+
+            Task task;
+            try {
+                 task = gson.fromJson(body, Task.class);
+
+                 if (task.getId() != 0 && fileBackedTasksManager.getTaskById(task.getId()) != null) {
+                     fileBackedTasksManager.updateTask(task.getId(), task);
+                     writeResponse(exchange, "задача обновлена", 200);
+                 } else {
+                     fileBackedTasksManager.createTask(task);
+                     writeResponse(exchange, "задача добавлена", 201);
+                 }
+            } catch (Exception e) {
+                writeResponse(exchange, "Получен некорректный JSON", 400);
+            }
+
+        }
+
+        private void handleGetTaskById(HttpExchange exchange) throws IOException {
+            Optional<Integer> id = getId(exchange);
+
+            if (id.isEmpty()) {
+                writeResponse(exchange, "Некорректный идентификатор задачи", 400);
+                return;
+            }
+
+            int taskId = id.get();
+
+            Task task = fileBackedTasksManager.getTaskById(taskId);
+
+            if (task == null) {
+                writeResponse(exchange, "Задача с идентификатором " + taskId + " не найдена"
+                        , 404);
+            } else {
+                writeResponse(exchange, gson.toJson(task), 200);
+            }
+        }
+
+        private void handleGetTasks(HttpExchange exchange) throws IOException {
+            List<Task> tasks = fileBackedTasksManager.getTasks();
+
+            if (tasks.isEmpty()) {
+                writeResponse(exchange, "Нет активных задач"
+                        , 404);
+            }
+            String json = gson.toJson(tasks);
+            writeResponse(exchange, json, 200);
+        }
+
+        private void handleDeleteTask(HttpExchange exchange) throws IOException {
+            fileBackedTasksManager.deleteAllTasks();
+            List<Task> tasks = fileBackedTasksManager.getTasks();
+            if (tasks == null || tasks.isEmpty()) {
+                writeResponse(exchange, "Все задачи успешно удалены", 200);
+            } else {
+                writeResponse(exchange, "Что то пошло не так", 500);
+            }
+        }
+
+        private void handleDeleteTaskById(HttpExchange exchange) throws IOException {
+            Optional<Integer> id = getId(exchange);
+
+            if (id.isEmpty()) {
+                writeResponse(exchange, "Некорректный идентификатор задачи", 400);
+                return;
+            }
+            int taskId = id.get();
+
+            Task task = fileBackedTasksManager.getTaskById(taskId);
+            if (task == null) {
+                writeResponse(exchange, "Задача с идентификатором " + taskId + " не найдена"
+                        , 404);
+            } else {
+                fileBackedTasksManager.deleteTaskById(taskId);
+                writeResponse(exchange, "Задача с идентификатором " + taskId + " успешно удалена"
+                        , 200);
+            }
+        }
+
+        private Optional<Integer> getId(HttpExchange exchange) {
+            String query = exchange.getRequestURI().getQuery();
+            if (query == null || !query.startsWith("id=")) {
+                return Optional.empty();
+            }
+
+            try {
+                return Optional.of(Integer.parseInt(query.substring(3)));
+            } catch (NumberFormatException e) {
+                return Optional.empty();
+            }
+        }
+
         private Endpoint getEndpoint(HttpExchange exchange) {
             String path = exchange.getRequestURI().getPath();
             String method = exchange.getRequestMethod();
@@ -122,7 +213,7 @@ public class HttpTaskServer {
             switch (method) {
                 case "GET":
                     switch (path) {
-                        case "/tasks":
+                        case "/tasks/task/":
                             if (query != null && query.startsWith("id=")) {
                                 return Endpoint.GET_TASK_BY_ID;
                             } else {
@@ -160,7 +251,7 @@ public class HttpTaskServer {
 
                 case "DELETE":
                     switch (path) {
-                        case "/tasks":
+                        case "/tasks/task/":
                             if (query != null && query.startsWith("id=")) {
                                 return Endpoint.DELETE_TASK_BY_ID;
                             } else {
@@ -196,46 +287,8 @@ public class HttpTaskServer {
                 }
             } else {
                 exchange.sendResponseHeaders(responseCode, -1);//тело не отправляется
-            }
+             }
         }
-
-        private void handlePostTask(HttpExchange exchange) throws IOException {
-            String body = new String(exchange.getRequestBody().readAllBytes(), DEFAULT_CHARSET);
-
-            Task task;
-            try {
-                task = gson.fromJson(body, Task.class);
-            } catch (Exception e) {
-                writeResponse(exchange, "Получен некорректный JSON", 400);
-                return;
-            }
-
-            if (task.getName() == null || task.getDescription() == null || task.getStatus() == null) {
-                writeResponse(exchange, "Поля задачи не могут быть пустыми", 400);
-                return;
-            }
-
-            fileBackedTasksManager.createTask(task);
-            writeResponse(exchange, "задача добавлена", 201);
-        }
-
-        private void handleGetTasks(HttpExchange exchange) throws IOException {
-            List<Task> tasks = fileBackedTasksManager.getTasks();
-            String json = gson.toJson(tasks);
-            writeResponse(exchange, json, 200);
-            writeResponse(exchange, "Получен запрос на получение задачи"
-                    , 200);
-        }
-
-//        private Optional<Integer> getEpicId(HttpExchange exchange) {
-//            String[] pathParts = exchange.getRequestURI().getPath().split("/");
-//
-//            try {
-//                return Optional.of(Integer.parseInt(pathParts[2]));
-//            } catch (NumberFormatException e) {
-//                return Optional.empty();
-//            }
-//        }
 
         enum Endpoint {
             GET_TASK,
@@ -247,12 +300,14 @@ public class HttpTaskServer {
             GET_SUBTASK,
             GET_SUBTASK_BY_ID,
             POST_SUBTASK,
+            UPDATE_SUBTASK,
             DELETE_SUBTASK_BY_ID,
             DELETE_SUBTASKS,
 
             GET_EPIC,
             GET_EPIC_BY_ID,
             POST_EPIC,
+            UPDATE_EPIC,
             DELETE_EPIC_BY_ID,
             DELETE_EPICS,
 
