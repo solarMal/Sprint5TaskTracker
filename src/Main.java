@@ -5,6 +5,9 @@ import tasks.Task;
 import manager.TaskManager;
 import inmemory.InMemoryTaskManager;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Optional;
 
 public class Main {
@@ -37,19 +40,20 @@ public class Main {
 
 
         taskManager.createEpic(firstEpic);
+        List<Epic> epic = taskManager.getEpics();
+        System.out.println(epic);
 
-        taskManager.createSubTask(firstSubTaskFirstEpic);
-        firstSubTaskFirstEpic.setStatus(Status.DONE);
+//        taskManager.createSubTask(firstSubTaskFirstEpic);
+//        firstSubTaskFirstEpic.setStatus(Status.DONE);
+//
+//        taskManager.createSubTask(secondSubTaskFirstEpic);
+//        secondSubTaskFirstEpic.setStatus(Status.DONE);
+//
+//        taskManager.createSubTask(thirdSubTaskFirstEpic);
+//        thirdSubTaskFirstEpic.setStatus(Status.DONE);
 
-        taskManager.createSubTask(secondSubTaskFirstEpic);
-        secondSubTaskFirstEpic.setStatus(Status.DONE);
-
-        taskManager.createSubTask(thirdSubTaskFirstEpic);
-        thirdSubTaskFirstEpic.setStatus(Status.DONE);
 
 
 
-        Optional<Long> e = firstEpic.getEndTime();
-        e.ifPresent(System.out::println);
     }
 }

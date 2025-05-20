@@ -10,25 +10,20 @@ import java.util.Optional;
 
 public class SubTask extends Task {
     Epic epic;
-    LocalDateTime startTime;
-    LocalDateTime endTime;
 
     public SubTask(String name, String description, Status status, Epic epic) {
         super(name, description, status);
         setEndTimeIfSubTaskCreateWithDoneStatus();
-        this.startTime = LocalDateTime.now();
         this.epic = epic;
     }
 
     public SubTask(int id, String name, String description, Status status, Epic epic) {
         super(id, name, description, status);
         setEndTimeIfSubTaskCreateWithDoneStatus();
-        this.startTime = LocalDateTime.now();
         this.epic = epic;
     }
 
     public SubTask() {
-        this.startTime = LocalDateTime.now();
     }
 
     public Epic getEpic() {

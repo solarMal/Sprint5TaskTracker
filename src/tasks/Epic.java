@@ -6,33 +6,25 @@ import java.time.LocalDateTime;
 import java.util.*;
 
 public class Epic extends Task {
-    HashMap<Integer, SubTask> subTasks;
-    LocalDateTime startTime;
+    HashMap<Integer, SubTask> subTasks = new HashMap<>();
 
     public Epic(String name, String description) {
         super(name, description);
-        this.startTime = LocalDateTime.now();
-        this.subTasks = new HashMap<>();
     }
 
     public Epic(int id, String name, String description, Status status, HashMap<Integer, SubTask> subTasks) {
         super(id, name, description, status);
-        this.startTime = LocalDateTime.now();
-        this.subTasks = subTasks;
     }
 
     public Epic() {
-        this.startTime = LocalDateTime.now();
     }
 
     public Epic(String name, String description, Status status) {
         super(name, description, status);
-        this.startTime = LocalDateTime.now();
     }
 
     public Epic(int id, String name, String description, Status status) {
         super(id, name, description, status);
-        this.startTime = LocalDateTime.now();
     }
 
 
@@ -69,9 +61,7 @@ public class Epic extends Task {
     }
 
     private List<Integer> getSubtaskId(HashMap<Integer, SubTask> sb) {
-        List<Integer> result = new ArrayList<>();
-        result.addAll(subTasks.keySet());
-        return result;
+        return new ArrayList<>(sb.keySet());
     }
 
     @Override
@@ -81,13 +71,13 @@ public class Epic extends Task {
         sb.append("id=").append(id)
                 .append(", name='").append(name).append('\'')
                 .append(", description='").append(description).append('\'')
-                .append(", status=").append(status)
-                .append('}');
+                .append(", status=").append(status);
 
-        if (!subTasks.isEmpty()) {
-            sb.append("subTasks=").append(getSubtaskId(subTasks)).append(", ");
+        if (subTasks != null && !subTasks.isEmpty()) {
+            sb.append(", subTasks=").append(getSubtaskId(subTasks));
         }
 
+        sb.append('}');
         return sb.toString();
     }
 

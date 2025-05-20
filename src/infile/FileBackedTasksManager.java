@@ -145,38 +145,30 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
 
     private void save() {
         try (Writer writer = new FileWriter(filePath, false)) {
-            writer.write("id,type,name,status,description,epic" + "\n");
+            writer.write("id,type,name,status,description,epic\n");
 
-            if (!taskHashMap.isEmpty()) {
-                List<Task> tasks = getTasks();
-                for (Task task: tasks) {
-                    writer.write(toString(task) + "\n");
-                }
+            for (Task task : getTasks()) {
+                writer.write(toString(task) + "\n");
             }
 
-            if (!epics.isEmpty()) {
-                List<Epic> epicList = getEpics();
-                for (Epic epic: epicList) {
-                    writer.write(toString(epic) + "\n");
-                }
+            for (Epic epic : getEpics()) {
+                writer.write(toString(epic) + "\n");
             }
 
-            if (!getEpics().isEmpty()) {
-                List<SubTask> subTasks = getAllSubTasks();
-                for (SubTask subTask: subTasks) {
-                    writer.write(toString(subTask) + "\n");
-                }
+            for (SubTask subTask : getAllSubTasks()) {
+                writer.write(toString(subTask) + "\n");
             }
 
-            if (!historyManager.getHistory().isEmpty()) {
-                String s = historyToString(historyManager);
-                writer.write("\n" + s);
+            writer.write("\n");
+
+            String history = historyToString(historyManager);
+            if (!history.isBlank()) {
+                writer.write(history);
             }
 
         } catch (IOException e) {
             throw new ManagerSaveException("Ошибка при сохранении данных", e);
         }
-
     }
 
     private String toString(Task task) {

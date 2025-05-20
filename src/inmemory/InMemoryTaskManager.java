@@ -109,14 +109,7 @@ public class InMemoryTaskManager implements TaskManager {
 
     @Override
     public List<Epic> getEpics() {
-        List<Epic> result = new ArrayList<>();
-        if (!epics.isEmpty()) {
-            for (Integer epicId : epics.keySet()) {
-                Epic epic = epics.get(epicId);
-                result.add(epic);
-            }
-        }
-        return result;
+        return new ArrayList<>(epics.values());
     }
 
     @Override
