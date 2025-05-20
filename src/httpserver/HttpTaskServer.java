@@ -285,7 +285,7 @@ public class HttpTaskServer {
         }
 
         private void handlePostSubTask(HttpExchange exchange) throws IOException {
-
+            //
         }
 
         private Endpoint getEndpoint(HttpExchange exchange) {
