@@ -25,8 +25,8 @@ public interface TaskManager {
     List<SubTask> getAllSubTasks();
     SubTask getSubTaskById(int id, Epic epic);
     SubTask updateSubTaskById(int id, SubTask subTask);
-    void deleteSubTaskById(int id, Epic epic);
-    void deleteAllSubTasks(Epic epic);
+    void deleteSubTaskById(int id);
+    void deleteAllSubTasks();
 
     List<Task> getHistory();
 }

@@ -211,31 +211,37 @@ public class InMemoryTaskManager implements TaskManager {
     }
 
     @Override
-    public void deleteAllSubTasks(Epic epic) {
-        if (!epic.getSubTasks().isEmpty()) {
-
-            for (int i: epic.getSubTasks().keySet()) {
-                historyManager.remove(i);
-            }
-
-            epic.getSubTasks().clear();
-            epic.setStatus(Status.NEW);
-            System.out.println("подзадачи успешно удалены");
-        } else {
-            System.out.println(epic + " не имеет подзадач");
+    public void deleteAllSubTasks() {
+        if (epics.isEmpty()) {
+            System.out.println("нет активных подзадач");
+            return;
         }
+
+        for (Epic epic: epics.values()) {
+            epic.getSubTasks().clear();
+            updateEpicStatus(epic);
+        }
+        System.out.println("все подзадачи удалены");
     }
 
     @Override
-    public void deleteSubTaskById(int id, Epic epic) {
-        if (!epic.getSubTasks().isEmpty() && epic.getSubTasks().containsKey(id)) {
-            historyManager.remove(id);
-            epic.getSubTasks().remove(id);
-            System.out.println("подзадача с id " + id + " удалена");
-            updateEpicStatus(epic);
-        } else {
-            System.out.println("ошибка удаления. Подзадачи с id " + id + " не существует");
+    public void deleteSubTaskById(int id) {
+        if (epics.isEmpty()) {
+            System.out.println("Нет активных подзадач");
+            return;
         }
+
+        for (Epic epic : epics.values()) {
+            if (epic.getSubTasks().containsKey(id)) {
+                epic.getSubTasks().remove(id);
+                historyManager.remove(id);
+                updateEpicStatus(epic);
+                System.out.println("Подзадача с id " + id + " удалена");
+                return;
+            }
+        }
+
+        System.out.println("Подзадача с id " + id + " не найдена");
     }
 
     @Override

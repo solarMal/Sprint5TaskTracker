@@ -39,21 +39,12 @@ public class Main {
                 , secondEpic);
 
 
+        taskManager.createTask(firstTask);
         taskManager.createEpic(firstEpic);
-        List<Epic> epic = taskManager.getEpics();
-        System.out.println(epic);
+        taskManager.createSubTask(firstSubTaskFirstEpic);
 
-//        taskManager.createSubTask(firstSubTaskFirstEpic);
-//        firstSubTaskFirstEpic.setStatus(Status.DONE);
-//
-//        taskManager.createSubTask(secondSubTaskFirstEpic);
-//        secondSubTaskFirstEpic.setStatus(Status.DONE);
-//
-//        taskManager.createSubTask(thirdSubTaskFirstEpic);
-//        thirdSubTaskFirstEpic.setStatus(Status.DONE);
-
-
-
+        List<Task> tasks = taskManager.getHistory();
+        System.out.println(tasks);
 
     }
 }
