@@ -1,6 +1,5 @@
 package inmemory;
 
-import com.google.gson.Gson;
 import manager.HistoryManager;
 import tasks.Task;
 

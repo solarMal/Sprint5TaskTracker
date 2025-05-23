@@ -143,7 +143,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return super.getHistory();
     }
 
-    private void save() {
+    protected void save() {
         try (Writer writer = new FileWriter(filePath, false)) {
             writer.write("id,type,name,status,description,epic\n");
 
@@ -234,7 +234,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return null;
     }
 
-    private String historyToString(HistoryManager manager) {
+    protected String historyToString(HistoryManager manager) {
         StringBuilder result = new StringBuilder();
         List<Task> tasks = manager.getHistory();
 
@@ -250,7 +250,7 @@ public class FileBackedTasksManager extends InMemoryTaskManager {
         return result.toString();
     }
 
-    private List<Integer> historyFromString(String value) {
+    protected List<Integer> historyFromString(String value) {
         List<Integer> historyIds = new ArrayList<>();
         if (value == null || value.isEmpty()) {
             return historyIds;

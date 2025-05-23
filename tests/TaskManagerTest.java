@@ -456,7 +456,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertTrue(taskManager.getAllSubTasks().contains(subTask));
         assertTrue(firstEpic.getSubTasks().containsKey(subTask.getId()));
 
-        taskManager.deleteSubTaskById(subTask.getId(), firstEpic);
+        taskManager.deleteSubTaskById(subTask.getId());
 
         assertTrue(taskManager.getAllSubTasks().isEmpty());
         assertNull(taskManager.getSubTaskById(subTask.getId(), firstEpic));
@@ -468,7 +468,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         taskManager.createEpic(firstEpic);
         assertTrue(firstEpic.getSubTasks().isEmpty());
         assertTrue(taskManager.getAllSubTasks().isEmpty());
-        taskManager.deleteSubTaskById(1, firstEpic);
+        taskManager.deleteSubTaskById(1);
         assertTrue(taskManager.getAllSubTasks().isEmpty());
         assertTrue(firstEpic.getSubTasks().isEmpty());
     }
@@ -484,7 +484,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertTrue(firstEpic.getSubTasks().containsKey(subTask.getId()));
         assertTrue(taskManager.getAllSubTasks().contains(subTask));
 
-        taskManager.deleteSubTaskById(subTask.getId() + 999, firstEpic);
+        taskManager.deleteSubTaskById(subTask.getId() + 999);
 
         assertTrue(firstEpic.getSubTasks().containsKey(subTask.getId()));
         assertTrue(taskManager.getAllSubTasks().contains(subTask));
@@ -555,7 +555,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
         assertEquals(3, taskManager.getAllSubTasks().size());
         assertEquals(3, firstEpic.getSubTasks().size());
 
-        taskManager.deleteAllSubTasks(firstEpic);
+        taskManager.deleteAllSubTasks();
 
         assertTrue(taskManager.getAllSubTasks().isEmpty());
         assertTrue(firstEpic.getSubTasks().isEmpty());
@@ -571,7 +571,7 @@ abstract class TaskManagerTest<T extends TaskManager> {
     void shouldNotFailWhenDeletingFromEmptySubTaskList() {
         taskManager.createEpic(firstEpic);
         assertTrue(taskManager.getAllSubTasks().isEmpty());
-        taskManager.deleteAllSubTasks(firstEpic);
+        taskManager.deleteAllSubTasks();
         assertTrue(taskManager.getAllSubTasks().isEmpty());
     }
 
